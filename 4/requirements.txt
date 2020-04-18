@@ -1,0 +1,7 @@
+Berikut merupakan Library yang harus di install terlebih dahulu:
+1. flask
+2. flask-wtf
+3. WTForms
+4. flask-mysql
+
+dan Import file warung_makan.sql pada database MariaDB
