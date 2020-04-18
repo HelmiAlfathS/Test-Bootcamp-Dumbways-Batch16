@@ -1,0 +1,104 @@
+{% from "includes/_form_helper.html" import render_field %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>App</title>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #9fc4df77;">
+        <div class="container">
+            <a class="navbar-brand" href="#">Warteg Astina</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav ml-auto">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add2" > Tambah Makanan</button>
+            </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- modal 2 -->
+
+    <div class="modal fade" id="add2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Tambahkan Makanan</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+      
+            <div class="modal-body">
+      
+              <!--  FORM  -->
+      
+              <form action=" {{ url_for('tambah_makanan') }} " method="POST" id="form2">
+                <div class="form-group">
+                    <form action="{{ url_for('index')}}" method="POST">
+                        {{ render_field(form.kategori, placeholder="kategori ...") }}
+                        {{ render_field(form.makanan, placeholder="nama makanan ...") }}
+                        {{ render_field(form.stok, placeholder="jumlah stok ...") }}
+                        {{ render_field(form.deskripsi, placeholder="deskripsi ...") }}
+                    </form>
+                </div>
+              </form>
+      
+              <!--  end FORM  -->
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" form="form2">Tambah</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
+    <!-- CARD -->
+    <div class="container mt-4">
+            
+        {% for kategori in datalist_kategori %}
+        <h3> {{ kategori['name']}} </h3>
+        <div class="row">
+            {% for food in datalist_foods %}
+            {% if food['category_id'] == kategori['id'] %}
+                
+            <div class="col-md-4">
+                <div class="card mb-5" style="width: 18rem;">
+                    <img src="../static/img/gorengan.jpg" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{food['name']}}</h5>
+                        <p class="card-text">stok : {{food['stok']}} </p>
+                        {% if  food['stok'] > 0 %}
+                        <a href="{{url_for('beli', id_makanan= food['id'] )}}" class="btn btn-primary float-right" onclick="return confirm('yakin ingin membeli?')">Beli</a>
+                        {% else %}
+                        <a href="{{url_for('beli', id_makanan= food['id'] )}}" class="btn btn-primary float-right disabled" onclick="return confirm('yakin ingin membeli?')">Beli</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>  
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
